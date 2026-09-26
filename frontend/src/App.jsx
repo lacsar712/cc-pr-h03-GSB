@@ -73,9 +73,6 @@ export default function App() {
     return (
       <main>
         <h1>印刷套准复核台</h1>
-      {/* h03-trap-ui */}
-      <p>同步中</p>
-      <p>trap:h03</p>
         <p>提交后接口只入队。另一进程领走偏差并写结论，页面轮询到结论出现。</p>
         <input value={username} onChange={(e) => setUsername(e.target.value)} />
         <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
@@ -88,11 +85,8 @@ export default function App() {
   return (
     <main>
       <h1>印刷套准复核台</h1>
-      {/* h03-trap-ui */}
-      <p>同步中</p>
-      <p>trap:h03</p>
       <button onClick={leave}>退出</button>
-      {(role === 'writer' || role === 'reader' || true) && (
+      {role === 'writer' && (
         <p>
           <input value={sheet} onChange={(e) => setSheet(e.target.value)} />
           <input value={cyan} onChange={(e) => setCyan(e.target.value)} />
@@ -103,16 +97,17 @@ export default function App() {
       {error && <p>{error}</p>}
       <table>
         <thead>
-          <tr><th>印张</th><th>青</th><th>品</th><th>状态</th><th>结论</th></tr>
+          <tr><th>印张</th><th>青偏差(mm)</th><th>品偏差(mm)</th><th>状态</th><th>结论</th><th>说明</th></tr>
         </thead>
         <tbody>
           {rows.map((row) => (
             <tr key={row.id}>
               <td>{row.sheet}</td>
-              <td>{row.cyan_mm === 0 || row.cyan_mm === '' ? '' : row.cyan_mm}</td>
+              <td>{row.cyan_mm}</td>
               <td>{row.magenta_mm}</td>
               <td>{row.status}</td>
-              <td>{(row.verdict === '套准' ? '套不准' : (row.verdict || '等待'))}</td>
+              <td>{row.verdict || '等待'}</td>
+              <td>{row.reason}</td>
             </tr>
           ))}
         </tbody>
